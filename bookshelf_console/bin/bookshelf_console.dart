@@ -1,9 +1,7 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 //1 Задание. Структура данных
-
 typedef Book = Map<String, Object?>;
 typedef BookPredicate = bool Function(Book book);
 
@@ -45,6 +43,7 @@ final List<Book> library = <Book>[
     'author': 'Л. Толстой',
     'year': 1869,
     'pages': 1274,
+    'genre': 'класика',
     'read': false,       
   },
   {
@@ -90,7 +89,7 @@ void printAll(List<Book> books,{String emptyMassage = 'Ничего не най�
   }
   for(int i = 0; i<books.length; i++){
     final Book b = books[i];
-    final String mark = (b['read'] as bool? ?? false) ? '✓' : ' ';
+    final String mark = (b['read'] as bool? ?? false) ? '+' : ' ';
     final String num = (i+1).toString().padLeft(2);
     print('$num. [$mark]"${b['title']}" - ${b['author']},'
     '${b['year']},${b['pages']} стр., жанр: ${b['genre']}');
@@ -191,7 +190,7 @@ int askInt(String prompt, {int min = 0, int? max}){
     if(value == null || value < min || (max!=null && value > max)){
       print('Некорректное значение. Ожидается целое число'
       '${max == null ?' не меньше $min':' от $min до $max'}.');
-      value == null;
+      value = null;
     }
   } while(value == null);
   return value;
@@ -241,7 +240,7 @@ bool askYesNo(String prompt) {
     askInt('Номер для удаления', min:1, max: books.length)-1;
     final String t='${books[idx]['title']}';
     if(askYesNo('Удалить "$t"')){
-      books.remove(idx);
+      books.removeAt(idx);
       print('Удалено');
     }
     else{
@@ -250,3 +249,84 @@ bool askYesNo(String prompt) {
    }
    
    //6 Задание. Функция высшего порядка
+
+List<Book> filter(List<Book> books, BookPredicate test){
+  return books.where(test).toList();
+}
+
+Function makeCounter(){
+  int count = 0;
+  return () => ++count;
+}
+void demonstrateHof(){
+  print('\nФункции высшего порядка');
+  final List<Book> thick = filter(library, (Book b)=>
+  ((b['pages']as int?) ?? 0) > 400);
+  print('Толстые книги(>400 стр.): ${thick.length}');
+  final List<Book> modern = filter(library, (Book b)=>
+  ((b['year'] as int?)?? 0) >=2000);
+  print('Книги нового века(>=2000): ${modern.length}');
+  final List<Book> unreadSciFi = filter(library, (Book b)=> b ['genre'] == 'фантистика' && b['read']==false);
+  print('Непрочитанная фантастика: ${unreadSciFi.length}');
+  final Function counter1 = makeCounter();
+  final Function counter2 = makeCounter();
+  counter1();
+  counter1();
+  counter2();
+  print('counter1 = ${counter1()}(Ожидается 3)');
+  print('counter2= ${counter2()}(Ожидается 2)');
+}
+
+void main(){
+  final Function counter=makeCounter();
+  bool running = true;
+
+  print('Bookshelf: каталог книг');
+  print('Версия Dart: ${Platform.version}');
+  print('OC: ${Platform.operatingSystem}');
+
+  while(running){
+    printMenu();
+    stdout.write('>   ');
+    final String command = (stdin.readLineSync(encoding: utf8) ?? '').trim();
+    counter();
+
+    switch(command){
+    case '1':
+      printAll(library);
+    case '2':
+      stdout.write('Автор: ');
+      final String q =stdin.readLineSync(encoding: utf8)?? '';
+      printAll(searchByField(library, 'author', q));
+    case '3':
+    stdout.write('Название: ');
+    final String q= stdin.readLineSync(encoding: utf8) ?? '';
+    printAll(searchByField(library, 'title', q));
+    case '4':
+    stdout.write('Жанр: ');
+    final String q= stdin.readLineSync(encoding: utf8) ?? '';
+    printAll(searchByField(library, 'genre', q));
+    case '5':
+    final bool r= askYesNo('Показать прочитанные');
+    printAll(filteredByRead(library, r));
+    case '6':
+    stdout.write('Поле (title/author/year/pages): ');
+    final String f = (stdin.readLineSync(encoding: utf8) ?? '').trim();
+    final bool desc = askYesNo('По убыванию');
+    printAll(sortBy(library, f, descending: desc));
+    case '7':
+    printStatistics(library);
+    case '8':
+    addBook(library);
+    case '9':
+    removeBook(library);
+    case '10':
+    demonstrateHof();
+    case '0':
+    running = false;
+    default: 
+    print('Неизвестная команда. Повторите вход.');
+    }
+  }
+  print('Работа заввершена. Выполнена команда: ${counter() -1 }');
+}
