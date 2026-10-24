@@ -11,7 +11,7 @@ final List<Book> library = <Book>[
     'author': 'С. А. Чернышев',
     'year': 2024,
     'pages': 521,
-    'genre':'Ученик',
+    'genre':'Учебник',
     'read': true,
   },
   {
@@ -19,7 +19,7 @@ final List<Book> library = <Book>[
     'author': 'Ф. заметти',
     'year': 2020,
     'pages': 328,
-    'genre': 'учебник',
+    'genre': 'Учебник',
     'read': false,
   },
   {
@@ -27,7 +27,7 @@ final List<Book> library = <Book>[
     'author': 'Р. Мартин',
     'year': 2008,
     'pages':464,
-    'genre':'программирование',
+    'genre':'Программирование',
     'read': true,
   },
   {
@@ -35,7 +35,7 @@ final List<Book> library = <Book>[
     'author':'Дж. Роулинг',
     'year': 1997,
     'pages': 332,
-    'genre': 'фэнтази',
+    'genre': 'Фантастика',
     'read':true,
   },
   {
@@ -43,7 +43,7 @@ final List<Book> library = <Book>[
     'author': 'Л. Толстой',
     'year': 1869,
     'pages': 1274,
-    'genre': 'класика',
+    'genre': 'Классика',
     'read': false,       
   },
   {
@@ -51,7 +51,7 @@ final List<Book> library = <Book>[
     'author': 'М. Булгаков',
     'year': 1965,
     'pages':688,
-    'genre':'фантастика',
+    'genre':'Фантастика',
     'read':true,
   },
   {
@@ -77,6 +77,7 @@ void printMenu(){
   print('7. Статистика каталога');
   print('8. Добавить книгу');
   print('9. Удалить книгу по номеру');
+  print('10. Функция высшего порядка');
   print(' 0. Выход');
 }
 
@@ -154,10 +155,10 @@ void printStatistics(List<Book> books){
  .toSet();
 
  final Map<String, int> byGenre = <String, int>{};
- books.forEach((Book b){
+ for(final Book b in books){
   final String g = b['genre']?.toString() ?? 'Без жанра';
   byGenre[g] = (byGenre[g] ??0)+1;
- });
+ }
 
  final double readPercent = readCount * 100 / total;
 
