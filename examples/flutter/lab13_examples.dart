@@ -235,5 +235,4 @@ class MovieListScreen extends StatelessWidget {
     );
   }
 }
-
 // @CONSUME_END@
