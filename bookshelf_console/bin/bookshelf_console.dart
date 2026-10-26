@@ -2,13 +2,13 @@ import 'dart:io';
 import 'dart:convert';
 
 void main() {
-  // ================== ЗАДАНИЕ 1. Приветствие ==================
+  //Задание 1. Приветствие
   print('1 задание.');
   print('Проект: BookShelf');
   print('Версия Dart: ${Platform.version}');
   print('ОС: ${Platform.operatingSystem}');
 
-  // ================== ЗАДАНИЕ 2. Ввод данных ==================
+  //Задание 2. Ввод данных 
   print('2 задание.');
   stdout.write('Название: ');
   final String title = stdin.readLineSync() ?? '';
@@ -39,7 +39,7 @@ void main() {
       .toLowerCase();
   final bool isRead =
       answer == 'да' || answer == 'yes' || answer == 'y' || answer == '1';
-  // ================== ЗАДАНИЕ 2. Карточка ==================
+  //  Задание 2.1. Карточка 
   print('');
   print(' «$title»');
   print(' Автор: $author');
@@ -49,7 +49,7 @@ void main() {
   print(' Прочитана: ${isRead ? "да" : "нет"}');
   print('--' * 44);
 
-  // ================== ЗАДАНИЕ 3. Характеристики ==================
+  // Задание 3. Характеристики
   print('3 задание.');
   final String category = pages < 150
       ? 'брошюра'
@@ -67,7 +67,7 @@ void main() {
   print('Возраст издания: $age лет');
   print('Инициалы автора: $initials');
 
-  // ================== ЗАДАНИЕ 4. Коллекции ==================
+  // Задание 4. Коллекции
   // List
   print('4 задание.');
   final List<String> shelf = <String>[
@@ -133,7 +133,7 @@ void main() {
   ];
   print('\nall = $all');
 
-  // ================== ЗАДАНИЕ 5. Операторы ==================
+  //  Задание 5. Операторы
   print('\n5 задание');
   print('7 / 2  = ${7 / 2}');
   print('7 ~/ 2 = ${7 ~/ 2}');
