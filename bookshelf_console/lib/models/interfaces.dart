@@ -1,4 +1,4 @@
-abstract interface class Searcheable {
+abstract interface class Searchable {
   bool matches(String query);
 }
 

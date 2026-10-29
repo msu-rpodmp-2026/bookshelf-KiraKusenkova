@@ -2,7 +2,7 @@ import 'reading_status.dart';
 import 'library_item.dart';
 import 'interfaces.dart';
 class Book extends LibraryItem
-    implements Searcheable, Exportable, Comparable<Book> {
+    implements Searchable, Exportable, Comparable<Book> {
   @override
   final String title;
   final String author;

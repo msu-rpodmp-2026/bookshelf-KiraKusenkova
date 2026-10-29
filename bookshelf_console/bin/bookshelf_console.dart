@@ -55,6 +55,8 @@ void main() {
     print('5. Статистика по жанрам');
     print('6. Демонстрация == и hashCode');
     print('7. Демонтрация миксинов(PaperBook)');
+    print('8. Добавить новую книгу');
+    print('9. Удалить книгу по названию');
     print('0. Выход');
     print('\n');
     stdout.write('>  ');
@@ -120,6 +122,23 @@ void main() {
         } else {
           print('Нет бумажные книг.');
         }
+        case '8':
+      stdout.write('Введите название: ');
+      final String newTitle = (stdin.readLineSync(encoding: utf8) ?? '').trim();
+      stdout.write('Введите автора: ');
+      final String newAuthor = (stdin.readLineSync(encoding: utf8) ?? '').trim();
+      myLibrary.add(Book(title: newTitle, author: newAuthor));
+      case '9': 
+      stdout.write('Введите название для удаления: ');
+      final String delTitle = (stdin.readLineSync(encoding: utf8) ?? '').trim();
+      final toRemove = myLibrary.findByTitle(delTitle);
+      if(toRemove != null){
+        myLibrary.remove(toRemove);
+        print('Книга "${toRemove.title}" удалена.');
+      }
+      else{
+        print('Книга не найдена.');
+      }
       case '0':
         running = false;
       default:
