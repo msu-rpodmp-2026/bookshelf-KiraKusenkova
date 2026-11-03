@@ -11,35 +11,41 @@ void main() {
   final Library<Book> myLibrary = Library<Book>();
 
   // Добавляем тестовые книги
-  myLibrary.add(PaperBook(
-    title: 'Война и мир',
-    author: 'Л. Толстой',
-    shelf: 'A-1',
-    year: 1896,
-    pages: 1274,
-    genres: {'Классика'},
-    status: ReadingStatus.finished,
-  ));
-  
-  myLibrary.add(EBook(
-    title: 'Основы Dart',
-    author: 'С. Чернышев',
-    format: 'PDF',
-    sizeMb: 15.5,
-    year: 2024,
-    pages: 521,
-    genres: {'Учебник', 'Программирование'},
-  ));
-  
-  myLibrary.add(AudioBook(
-    title: 'Гарри Поттер',
-    author: 'Дж. Роулинг',
-    duration: Duration(hours: 10, minutes: 30),
-    narrator: 'А. Клюквин',
-    year: 1997,
-    genres: {'Фэнтези'},
-    status: ReadingStatus.reading,
-  ));
+  myLibrary.add(
+    PaperBook(
+      title: 'Война и мир',
+      author: 'Л. Толстой',
+      shelf: 'A-1',
+      year: 1896,
+      pages: 1274,
+      genres: {'Классика'},
+      status: ReadingStatus.finished,
+    ),
+  );
+
+  myLibrary.add(
+    EBook(
+      title: 'Основы Dart',
+      author: 'С. Чернышев',
+      format: 'PDF',
+      sizeMb: 15.5,
+      year: 2024,
+      pages: 521,
+      genres: {'Учебник', 'Программирование'},
+    ),
+  );
+
+  myLibrary.add(
+    AudioBook(
+      title: 'Гарри Поттер',
+      author: 'Дж. Роулинг',
+      duration: Duration(hours: 10, minutes: 30),
+      narrator: 'А. Клюквин',
+      year: 1997,
+      genres: {'Фэнтези'},
+      status: ReadingStatus.reading,
+    ),
+  );
 
   bool running = true;
 
@@ -76,8 +82,12 @@ void main() {
       case '3':
         print('Доступные жанры: ${myLibrary.countByGenre().keys.join(', ')}');
         stdout.write('Введите жанр: ');
-        final String g = (stdin.readLineSync(encoding: utf8) ?? '').trim().toLowerCase();
-        final byGenre = myLibrary.where((b) => b.genres.any((genre) => genre.toLowerCase() == g));
+        final String g = (stdin.readLineSync(encoding: utf8) ?? '')
+            .trim()
+            .toLowerCase();
+        final byGenre = myLibrary.where(
+          (b) => b.genres.any((genre) => genre.toLowerCase() == g),
+        );
         for (final book in byGenre) {
           book.printCard();
         }
