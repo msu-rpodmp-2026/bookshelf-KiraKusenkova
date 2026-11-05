@@ -1,7 +1,7 @@
 import 'book.dart';
 import 'mixins.dart';
 
-class PaperBook extends Book with Rateble, Loggable, Borrowable {
+class PaperBook extends Book with Ratable, Loggable, Borrowable {
   final String shelf;
   PaperBook({
     required super.title,

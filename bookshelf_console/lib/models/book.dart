@@ -53,17 +53,27 @@ class Book extends LibraryItem
   @override
   Map<String, dynamic> toJson() {
     return {
-      'type': 'Book',
       'title': title,
       'author': author,
       'year': year,
       'pages': pages,
-      'genres': genres,
+      'genres': genres.toList(),
       'status': status.name,
-      'rating': _rating,
+      if (rating != null) 'rating': _rating,
     };
   }
 
+  factory Book.fromJson(Map<String, dynamic> j) {
+    return Book(
+      title: j['title'] as String? ?? 'Без названия',
+      author: j['author'] as String? ?? 'Автор неизвестен',
+      year: (j['year'] as num?)?.toInt() ?? 0,
+      pages: (j['pages'] as num?)?.toInt() ?? 0,
+      genres: (j['genres'] as List?)?.cast<String>().toSet() ?? <String>{},
+      status: ReadingStatus.fromName(j['status'] as String? ?? ''),
+      rating: (j['rating'] as num?)?.toDouble(),
+    );
+  }
   @override
   String toString() => '"$shortTitle" - $author ($year), $pages стр.';
 

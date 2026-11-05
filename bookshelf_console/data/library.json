@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Война и мир",
+    "author": "Л. Толстой",
+    "year": 1869,
+    "pages": 1274,
+    "genres": [
+      "Классика"
+    ],
+    "status": "finished"
+  },
+  {
+    "title": "Основы Dart",
+    "author": "С. Чернышев",
+    "year": 2024,
+    "pages": 521,
+    "genres": [
+      "Учебник"
+    ],
+    "status": "planned"
+  }
+]
