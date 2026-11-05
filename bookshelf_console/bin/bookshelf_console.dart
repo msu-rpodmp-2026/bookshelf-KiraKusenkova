@@ -4,60 +4,69 @@ import 'package:bookshelf_console/models/reading_status.dart';
 import 'package:bookshelf_console/models/book.dart';
 import 'package:bookshelf_console/models/paper_book.dart';
 import 'package:bookshelf_console/models/ebook.dart';
-import 'package:bookshelf_console/models/audio_book.dart';
 import 'package:bookshelf_console/models/library.dart';
+import 'package:bookshelf_console/models/library_storage.dart';
 
-void main() {
+class LibraryFormatException implements Exception {
+  final String message;
+  final int line;
+  LibraryFormatException(this.message, this.line);
+
+  @override
+  String toString() => 'Ошибка в строке $line: $message';
+}
+
+void main() async {
+  const storage = LibraryStorage('data');
   final Library<Book> myLibrary = Library<Book>();
 
-  // Добавляем тестовые книги
-  myLibrary.add(
-    PaperBook(
-      title: 'Война и мир',
-      author: 'Л. Толстой',
-      shelf: 'A-1',
-      year: 1896,
-      pages: 1274,
-      genres: {'Классика'},
-      status: ReadingStatus.finished,
-    ),
-  );
+  print('Загрузка каталога...');
 
-  myLibrary.add(
-    EBook(
-      title: 'Основы Dart',
-      author: 'С. Чернышев',
-      format: 'PDF',
-      sizeMb: 15.5,
-      year: 2024,
-      pages: 521,
-      genres: {'Учебник', 'Программирование'},
-    ),
-  );
-
-  myLibrary.add(
-    AudioBook(
-      title: 'Гарри Поттер',
-      author: 'Дж. Роулинг',
-      duration: Duration(hours: 10, minutes: 30),
-      narrator: 'А. Клюквин',
-      year: 1997,
-      genres: {'Фэнтези'},
-      status: ReadingStatus.reading,
-    ),
-  );
+  try {
+    final loadedBooks = await storage.load();
+    if (loadedBooks.isEmpty) {
+      print('Файл не найден или пуст. Создаем тестовые данные.');
+      myLibrary.add(
+        PaperBook(
+          title: 'Война и мир',
+          author: 'Л. Толстой',
+          shelf: 'A-1',
+          year: 1869,
+          pages: 1274,
+          genres: {'Классика'},
+          status: ReadingStatus.finished,
+        ),
+      );
+      myLibrary.add(
+        EBook(
+          title: 'Основы Dart',
+          author: 'С. Чернышев',
+          format: 'PDF',
+          sizeMb: 15.5,
+          year: 2024,
+          pages: 521,
+          genres: {'Учебник'},
+        ),
+      );
+      await storage.save(myLibrary.items.toList());
+    } else {
+      for (var b in loadedBooks) {
+        myLibrary.add(b);
+      }
+      print('Успешно загружено книг: ${myLibrary.count}');
+    }
+  } catch (e) {
+    print('Ошибка при загрузке: $e');
+  }
 
   bool running = true;
 
   while (running) {
-    print('\n===== BookShelf: каталог (ЛР №3) =====');
+    print('\nBookshelf:каталог(ЛР №4)');
     print('1. Показать весь каталог');
     print('2. Поиск по названию/автору');
-    print('3. Поиск по жанру');
-    print('4. Сортировка по названию');
-    print('5. Статистика по жанрам');
-    print('6. Демонстрация == и hashCode');
-    print('7. Демонстрация миксинов (PaperBook)');
+    print('3. Статистика по жанрам');
+    print('4. Сделать резервную копию(backup)');
     print('0. Выход');
     stdout.write('>  ');
 
@@ -65,68 +74,31 @@ void main() {
 
     switch (command) {
       case '1':
-        print('\nКаталог:');
-        if (myLibrary.count == 0) print('Пусто');
         for (final book in myLibrary.items) {
           book.printCard();
         }
       case '2':
         stdout.write('Введите запрос: ');
-        final String q = (stdin.readLineSync(encoding: utf8) ?? '').trim();
+        final q = (stdin.readLineSync(encoding: utf8) ?? '').trim();
         final results = myLibrary.search(q);
-        print('Результаты поиска:');
         if (results.isEmpty) print('Ничего не найдено');
         for (final book in results) {
           book.printCard();
         }
       case '3':
-        print('Доступные жанры: ${myLibrary.countByGenre().keys.join(', ')}');
-        stdout.write('Введите жанр: ');
-        final String g = (stdin.readLineSync(encoding: utf8) ?? '')
-            .trim()
-            .toLowerCase();
-        final byGenre = myLibrary.where(
-          (b) => b.genres.any((genre) => genre.toLowerCase() == g),
-        );
-        for (final book in byGenre) {
-          book.printCard();
-        }
-      case '4':
-        final sorted = List<Book>.from(myLibrary.items)..sort();
-        print('\nОтсортировано по названию:');
-        for (final book in sorted) {
-          print(book);
-        }
-      case '5':
-        print('\nСтатистика по жанрам:');
         final stats = myLibrary.countByGenre();
         stats.forEach((genre, count) => print('$genre: $count'));
-      case '6':
-        print('\nПроверка == и hashCode:');
-        final book1 = Book(title: '1984', author: 'Дж. Оруэлл', year: 1949);
-        final book2 = Book(title: '1984', author: 'Дж. Оруэлл', year: 1949);
-        print('book1 == book2: ${book1 == book2}');
-        final Set<Book> set = {book1, book2};
-        print('Размер Set (должен быть 1): ${set.length}');
-      case '7':
-        print('\nМиксины (выдача книг):');
-        final paperBooks = myLibrary.where((b) => b is PaperBook);
-        if (paperBooks.isNotEmpty) {
-          final pb = paperBooks.first as PaperBook;
-          pb.log('Попытка выдать книгу "${pb.title}"');
-          pb.borrow(14);
-          pb.vote(5.0);
-          pb.vote(4.0);
-          print('Средний рейтинг: ${pb.averageRating}');
-          pb.giveBack();
-        } else {
-          print('Нет бумажных книг.');
-        }
+      case '4':
+        final success = await storage.backup();
+        print(success ? 'Резервная копия создана!' : 'Нечего копировать.');
       case '0':
         running = false;
       default:
-        print('Неизвестная команда. Повторите ввод.');
+        print('Неизвестная команда.');
+    }
+    if (running) {
+      await storage.save(myLibrary.items.toList());
     }
   }
-  print('Работа завершена.');
+  print('Работа завершена. Сохранено книг: ${myLibrary.count}');
 }
