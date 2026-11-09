@@ -1,6 +1,6 @@
 import 'book.dart';
 
-mixin Rateble {
+mixin Ratable {
   double _ratingSum = 0.0;
   int _votesCount = 0;
 
