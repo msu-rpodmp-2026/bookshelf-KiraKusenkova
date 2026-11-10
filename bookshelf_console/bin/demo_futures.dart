@@ -33,8 +33,6 @@ void main() async {
   try {
     await slowTask('Долгая', 5).timeout(Duration(seconds: 2));
   } on TimeoutException {
-    print(
-      'Есть TimeoutException! Задача не успела выполниться за 2 секунды.',
-    );
+    print('Есть TimeoutException! Задача не успела выполниться за 2 секунды.');
   }
 }

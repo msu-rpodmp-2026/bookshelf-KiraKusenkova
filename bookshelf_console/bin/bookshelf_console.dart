@@ -153,7 +153,7 @@ void main() async {
           print('Сервис вернул данные в неожидаемом формате.');
         } on HttpException catch (e) {
           print('Ошибка сервиса: ${e.message}');
-        } finally{
+        } finally {
           timer.cancel();
           print('');
         }
