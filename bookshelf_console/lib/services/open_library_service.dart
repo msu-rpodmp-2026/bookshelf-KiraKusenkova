@@ -22,7 +22,7 @@ class OpenLibraryService {
         .timeout(const Duration(seconds: 10));
 
     if (response.statusCode != 200) {
-      throw HttpException('Open Lilbrary вернул ${response.statusCode}');
+      throw HttpException('Open Library вернул ${response.statusCode}');
     }
 
     final json =
@@ -43,7 +43,7 @@ class OpenLibraryService {
 
     String? coverUrl;
     if (coverId != null) {
-      coverUrl = 'https://covers.openLibrary.org/b/id/$coverId-M.jpg';
+      coverUrl = 'https://covers.openlibrary.org/b/id/$coverId-M.jpg';
     }
     return Book(
       title: d['title'] as String? ?? '',

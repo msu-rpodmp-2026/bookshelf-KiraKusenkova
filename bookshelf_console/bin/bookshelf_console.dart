@@ -104,7 +104,9 @@ void main() async {
           break;
         }
         print('Идёт поиск, подождите...');
-        final timer = Timer.periodic(const Duration(milliseconds: 500), (_) {});
+        final timer = Timer.periodic(const Duration(milliseconds: 500), (_) {
+          stdout.write('.');
+        });
 
         try {
           final foundBooks = await service.search(query);
@@ -151,6 +153,9 @@ void main() async {
           print('Сервис вернул данные в неожидаемом формате.');
         } on HttpException catch (e) {
           print('Ошибка сервиса: ${e.message}');
+        } finally{
+          timer.cancel();
+          print('');
         }
       case '0':
         running = false;
