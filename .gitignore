@@ -26,3 +26,4 @@ Thumbs.db
 **/android/key.properties
 **/android/**/*.keystore
 **/android/**/*.jks
+bookshelf_console/data/*.bak

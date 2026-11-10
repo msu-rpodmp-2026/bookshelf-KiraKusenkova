@@ -11,6 +11,7 @@ class Book extends LibraryItem
   final int pages;
   final Set<String> genres;
   final ReadingStatus status;
+  final String? coverUrl;
 
   double? _rating;
   Book({
@@ -20,6 +21,7 @@ class Book extends LibraryItem
     this.pages = 100,
     Set<String>? genres,
     this.status = ReadingStatus.planned,
+    this.coverUrl,
     double? rating,
   }) : genres = genres ?? <String>{},
        _rating = rating {
@@ -60,6 +62,7 @@ class Book extends LibraryItem
       'genres': genres.toList(),
       'status': status.name,
       if (rating != null) 'rating': _rating,
+      if (coverUrl != null) 'coverUrl': coverUrl,
     };
   }
 
@@ -71,6 +74,7 @@ class Book extends LibraryItem
       pages: (j['pages'] as num?)?.toInt() ?? 0,
       genres: (j['genres'] as List?)?.cast<String>().toSet() ?? <String>{},
       status: ReadingStatus.fromName(j['status'] as String? ?? ''),
+      coverUrl: j['coverUrl'] as String?,
       rating: (j['rating'] as num?)?.toDouble(),
     );
   }
