@@ -1,4 +1,4 @@
-import 'dart:async';
+//import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:bookshelf_console/models/reading_status.dart';
@@ -7,7 +7,7 @@ import 'package:bookshelf_console/models/paper_book.dart';
 import 'package:bookshelf_console/models/ebook.dart';
 import 'package:bookshelf_console/models/library.dart';
 import 'package:bookshelf_console/models/library_storage.dart';
-import 'package:bookshelf_console/services/open_library_service.dart';
+//import 'package:bookshelf_console/services/open_library_service.dart';
 
 class LibraryFormatException implements Exception {
   final String message;
@@ -21,7 +21,7 @@ class LibraryFormatException implements Exception {
 void main() async {
   const storage = LibraryStorage('data');
   final Library<Book> myLibrary = Library<Book>();
-  final service = OpenLibraryService();
+  //final service = OpenLibraryService();
 
   print('Загрузка каталога...');
 
@@ -95,68 +95,68 @@ void main() async {
       case '4':
         final success = await storage.backup();
         print(success ? 'Резервная копия создана!' : 'Нечего копировать.');
-      case '5':
-        stdout.write('Введите запрос для поиска в интернете: ');
-        final query = (stdin.readLineSync(encoding: utf8) ?? '').trim();
+      // case '5':
+      //   stdout.write('Введите запрос для поиска в интернете: ');
+      //   final query = (stdin.readLineSync(encoding: utf8) ?? '').trim();
 
-        if (query.isEmpty) {
-          print('Пустой запрос.');
-          break;
-        }
-        print('Идёт поиск, подождите...');
-        final timer = Timer.periodic(const Duration(milliseconds: 500), (_) {
-          stdout.write('.');
-        });
+      //   if (query.isEmpty) {
+      //     print('Пустой запрос.');
+      //     break;
+      //   }
+      //   print('Идёт поиск, подождите...');
+      //   final timer = Timer.periodic(const Duration(milliseconds: 500), (_) {
+      //     stdout.write('.');
+      //   });
 
-        try {
-          final foundBooks = await service.search(query);
-          timer.cancel();
+      //   try {
+      //     final foundBooks = await service.search(query);
+      //     timer.cancel();
 
-          if (foundBooks.isEmpty) {
-            print('Ничего не найдено в Open Library.');
-            break;
-          }
+      //     if (foundBooks.isEmpty) {
+      //       print('Ничего не найдено в Open Library.');
+      //       break;
+      //     }
 
-          print('Найденные книги:');
-          for (int i = 0; i < foundBooks.length; i++) {
-            final b = foundBooks[i];
-            print(
-              '${i + 1}. ${foundBooks[i].shortTitle} - ${foundBooks[i].author} (${foundBooks[i].year})',
-            );
-            if (b.coverUrl != null) {
-              print('   Обложка: ${b.coverUrl}');
-            }
-          }
+      //     print('Найденные книги:');
+      //     for (int i = 0; i < foundBooks.length; i++) {
+      //       final b = foundBooks[i];
+      //       print(
+      //         '${i + 1}. ${foundBooks[i].shortTitle} - ${foundBooks[i].author} (${foundBooks[i].year})',
+      //       );
+      //       if (b.coverUrl != null) {
+      //         print('   Обложка: ${b.coverUrl}');
+      //       }
+      //     }
 
-          stdout.write(
-            '\nВведите номер книги для добавления в каталог(0 - отмена): ',
-          );
-          final choiceStr = stdin.readLineSync(encoding: utf8) ?? '0';
-          final choice = int.tryParse(choiceStr) ?? 0;
+      //     stdout.write(
+      //       '\nВведите номер книги для добавления в каталог(0 - отмена): ',
+      //     );
+      //     final choiceStr = stdin.readLineSync(encoding: utf8) ?? '0';
+      //     final choice = int.tryParse(choiceStr) ?? 0;
 
-          if (choice > 0 && choice <= foundBooks.length) {
-            final selectedBook = foundBooks[choice - 1];
-            myLibrary.add(selectedBook);
-            await storage.save(myLibrary.items.toList());
+      //     if (choice > 0 && choice <= foundBooks.length) {
+      //       final selectedBook = foundBooks[choice - 1];
+      //       myLibrary.add(selectedBook);
+      //       await storage.save(myLibrary.items.toList());
 
-            print(
-              'Книга "${selectedBook.title}" добавлена в каталог и сохранена!',
-            );
-          } else {
-            print('Добавление отменено');
-          }
-        } on SocketException {
-          print('Нет соединения с сетью. Работаем с локальным каталогом.');
-        } on TimeoutException {
-          print('Сервис не ответил за 10 секунд. Повторите попытку позже.');
-        } on FormatException {
-          print('Сервис вернул данные в неожидаемом формате.');
-        } on HttpException catch (e) {
-          print('Ошибка сервиса: ${e.message}');
-        } finally {
-          timer.cancel();
-          print('');
-        }
+      //       print(
+      //         'Книга "${selectedBook.title}" добавлена в каталог и сохранена!',
+      //       );
+      //     } else {
+      //       print('Добавление отменено');
+      //     }
+      //   } on SocketException {
+      //     print('Нет соединения с сетью. Работаем с локальным каталогом.');
+      //   } on TimeoutException {
+      //     print('Сервис не ответил за 10 секунд. Повторите попытку позже.');
+      //   } on FormatException {
+      //     print('Сервис вернул данные в неожидаемом формате.');
+      //   } on HttpException catch (e) {
+      //     print('Ошибка сервиса: ${e.message}');
+      //   } finally {
+      //     timer.cancel();
+      //     print('');
+      //   }
       case '0':
         running = false;
       default:
@@ -167,5 +167,5 @@ void main() async {
     }
   }
   print('Работа завершена. Сохранено книг: ${myLibrary.count}');
-  service.dispose();
+  // service.dispose();
 }
