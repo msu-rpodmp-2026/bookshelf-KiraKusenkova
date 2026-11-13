@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import '../models/book.dart';
-import '../models/reading_status.dart';
+import '../../../../models/book.dart';
+import '../../../../models/reading_status.dart';
 
 class OpenLibraryService {
   final http.Client _client;
@@ -17,9 +17,8 @@ class OpenLibraryService {
       'fields':
           'title,author_name,first_publish_year,number_of_pages_median,cover_i,subject',
     });
-    final response = await _client
-        .get(uri)
-        .timeout(const Duration(seconds: 10));
+    final response =
+        await _client.get(uri).timeout(const Duration(seconds: 10));
 
     if (response.statusCode != 200) {
       throw HttpException('Open Library вернул ${response.statusCode}');
