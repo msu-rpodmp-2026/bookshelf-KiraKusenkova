@@ -191,7 +191,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    _searchController.dispose();
     _service.dispose();
     super.dispose();
   }
