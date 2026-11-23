@@ -27,3 +27,16 @@ Thumbs.db
 **/android/**/*.keystore
 **/android/**/*.jks
 bookshelf_console/data/*.bak
+bookshelf/android/sources/
+build/
+.dart_tool/
+.packages
+bookshelf/android/AndroidSDK/
+
+# Локальные файлы Android SDK
+bookshelf/android/.knownPackages
+bookshelf/android/build-tools/
+bookshelf/android/emulator/
+bookshelf/android/licenses/
+bookshelf/android/platform-tools/
+bookshelf/android/platforms/
