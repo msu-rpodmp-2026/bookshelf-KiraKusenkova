@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import '../models/book.dart';
-import '../models/reading_status.dart';
+import '../../../../models/book.dart';
+import '../../../../models/reading_status.dart';
 
 class OpenLibraryService {
   final http.Client _client;
