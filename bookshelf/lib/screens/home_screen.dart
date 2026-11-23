@@ -110,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bookshelf: Каталог (${myLibrary.count})'),
+        title: Text('Моя библиотека (${myLibrary.count})'),
         backgroundColor: const Color(0xFF932121),
         foregroundColor: const Color(0xFFFFFBDE),
         actions: [

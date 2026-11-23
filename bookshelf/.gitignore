@@ -44,5 +44,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-bookshelf/android/AndroidSDK/
 
+# Android SDK
+bookshelf/android/build-tools/
+bookshelf/android/platforms/
+bookshelf/android/platform-tools/
